@@ -1,5 +1,6 @@
 import 'package:al_hafidz/globals.dart';
 import 'package:al_hafidz/screens/home_screen.dart';
+import 'package:al_hafidz/screens/prayer_times_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' as rootBundle;
@@ -72,25 +73,22 @@ class _DoaPageState extends State<DoaPage> {
       case 0:
         Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  HomeScreen()), 
+          MaterialPageRoute(builder: (context) => HomeScreen()),
         );
         break;
       case 1:
-        Navigator.pushReplacementNamed(
-            context, '/tipsPage'); 
         break;
       case 2:
-        Navigator.pushReplacementNamed(
-            context, '/prayerPage'); 
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => PrayerTimesScreen()),
+        );
         break;
       case 3:
         // Doa Page - current page
         break;
       case 4:
-        Navigator.pushReplacementNamed(
-            context, '/bookmarkPage'); 
+        Navigator.pushReplacementNamed(context, '/bookmarkPage');
         break;
     }
   }
@@ -98,20 +96,26 @@ class _DoaPageState extends State<DoaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: false,
       appBar: AppBar(
         title: Text(
-          'Doa Harian',
-          style: TextStyle(color: Colors.white),
+          'Doa Page',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
+        centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.white),
+        automaticallyImplyLeading: false, // Disables the back button
       ),
       backgroundColor: Colors.black,
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : ListView.separated(
+              padding: const EdgeInsets.only(
+                  top: kToolbarHeight + 16), // Adds padding to prevent overlap
               itemCount: doas.length,
               separatorBuilder: (context, index) => Divider(
                   color: const Color.fromARGB(255, 255, 255, 255)
@@ -121,8 +125,7 @@ class _DoaPageState extends State<DoaPage> {
                     doa: doas[index], index: index, context: context);
               },
             ),
-      bottomNavigationBar:
-          _bottomNavigationBar(), 
+      bottomNavigationBar: _bottomNavigationBar(),
     );
   }
 
@@ -152,7 +155,7 @@ class _DoaPageState extends State<DoaPage> {
         ),
         activeIcon: SvgPicture.asset(
           icon,
-          color: primary, 
+          color: primary,
         ),
         label: label,
       );
